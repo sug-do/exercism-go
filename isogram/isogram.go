@@ -1,24 +1,17 @@
 package isogram
 
-import (
-	"strings"
-)
+import "unicode"
 
 // IsIsogram will return true if a word is an isogram and false if it isn't.
 func IsIsogram(wordIn string) bool {
-	wordInUp := strings.ToUpper(wordIn)
-	for _, letter := range wordInUp {
-		if letter >= 65 && letter <= 90 {
-			matchLet := 0
-			for _, wordLet := range wordInUp {
-				switch wordLet == letter {
-				case true:
-					matchLet++
-				}
-				if matchLet > 1 {
-					return false
-				}
+	isoMap := make(map[rune]bool)
+	for _, value := range wordIn {
+		if unicode.IsLetter(value) {
+			upValue := unicode.ToUpper(value)
+			if _, exist := isoMap[upValue]; exist {
+				return false
 			}
+			isoMap[upValue] = false
 		}
 	}
 	return true
